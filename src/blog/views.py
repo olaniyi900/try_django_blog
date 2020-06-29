@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import BlogPost
 from .forms import BlogPostForm
 from .forms import BlogPostModelForm
@@ -10,6 +12,7 @@ def blog_list(request):
     context = {'posts':obj}
     return render(request, template_name, context)
 
+@staff_member_required
 def blog_create(request):
     form = BlogPostModelForm(request.POST or None)
     if form.is_valid():
@@ -27,6 +30,7 @@ def blog_detail(request, slug):
     context = {'blog':obj}
     return render(request, template_name, context)
 
+@staff_member_required
 def blog_delete(request, slug):
     obj = BlogPost.objects.get(slug=slug)
     if request.method == 'POST':
@@ -36,7 +40,7 @@ def blog_delete(request, slug):
     context = {'object':obj}
     return render(request, template_name, context)
 
-
+@staff_member_required
 def blog_update(request, slug):
     obj = BlogPost.objects.get(slug=slug)
     form = BlogPostModelForm(request.POST or None, instance=obj)

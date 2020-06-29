@@ -5,7 +5,7 @@
 {% block content %}
     <h1>The blog Posts</h1>
     {% for post in posts %}
-        <h3>{{ post.title }}</h3>
+        <h3><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h3>
         <p>{{ post.content }}</p>
     {% endfor %}
 {% endblock %}
