@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import BlogPost
 from .forms import BlogPostForm
+from .forms import BlogPostModelForm
 
 # Create your views here.
 def blog_list(request):
@@ -10,11 +11,12 @@ def blog_list(request):
     return render(request, template_name, context)
 
 def blog_create(request):
-    form = BlogPostForm(request.POST or None)
+    form = BlogPostModelForm(request.POST or None)
     if form.is_valid():
-        print(form.cleaned_data)
-        obj = BlogPost.objects.create(**form.cleaned_data)
-        form = BlogPostForm()
+        form.save()
+        # print(form.cleaned_data)
+        # obj = BlogPost.objects.create(**form.cleaned_data)
+        form =  BlogPostModelForm()
     template_name = 'blog/blog_create.html'
     context = {'form': form}
     return render(request, template_name, context)
@@ -25,13 +27,22 @@ def blog_detail(request, slug):
     context = {'blog':obj}
     return render(request, template_name, context)
 
-def blog_delete(request):
+def blog_delete(request, slug):
+    obj = BlogPost.objects.get(slug=slug)
+    if request.method == 'POST':
+        obj.delete()
+        return redirect('/blog')
     template_name = 'blog/blog_delete.html'
-    context = {'form':'ade'}
+    context = {'object':obj}
     return render(request, template_name, context)
 
 
-def blog_update(request):
+def blog_update(request, slug):
+    obj = BlogPost.objects.get(slug=slug)
+    form = BlogPostModelForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        form = BlogPostModelForm()
     template_name = 'blog/blog_update.html'
-    context = {'form':'ade'}
+    context = {'form':form}
     return render(request, template_name, context)

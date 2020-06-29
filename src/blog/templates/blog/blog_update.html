@@ -3,6 +3,11 @@
     create blog post
 {% endblock  %}
 {% block content %}
- <h1>Update a blog post</h1>
- <p>{{ form }}</p>
+ <h1>Create a blog post</h1>
+ <form action="." method="post">
+     {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+ </form>
+
 {% endblock  %}
