@@ -12,14 +12,17 @@ def blog_list(request):
     context = {'posts':obj}
     return render(request, template_name, context)
 
+@login_required
 @staff_member_required
 def blog_create(request):
     form = BlogPostModelForm(request.POST or None)
     if form.is_valid():
         form.save()
+        form =  BlogPostModelForm()
+        return redirect('blog_list')
         # print(form.cleaned_data)
         # obj = BlogPost.objects.create(**form.cleaned_data)
-        form =  BlogPostModelForm()
+       
     template_name = 'blog/blog_create.html'
     context = {'form': form}
     return render(request, template_name, context)
