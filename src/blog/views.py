@@ -15,7 +15,7 @@ def blog_list(request):
 @login_required
 @staff_member_required
 def blog_create(request):
-    form = BlogPostModelForm(request.POST or None)
+    form = BlogPostModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
         form =  BlogPostModelForm()
@@ -46,7 +46,7 @@ def blog_delete(request, slug):
 @staff_member_required
 def blog_update(request, slug):
     obj = BlogPost.objects.get(slug=slug)
-    form = BlogPostModelForm(request.POST or None, instance=obj)
+    form = BlogPostModelForm(request.POST or None, request.FILES or None, instance=obj)
     if form.is_valid():
         form.save()
         form = BlogPostModelForm()

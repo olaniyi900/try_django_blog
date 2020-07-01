@@ -10,6 +10,6 @@ class BlogPostModelForm(forms.ModelForm):
     
     class Meta:
         model = BlogPost
-        fields = ['title', 'slug', 'content']
+        fields = ['title', 'images', 'slug', 'content']
 
     

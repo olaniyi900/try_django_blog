@@ -5,6 +5,9 @@
 {% block content %}
 <h1>{{ blog.title }}</h1>
 <p>{{blog.content}}</p>
+{% if blog.images %}
+    <img src="{{ blog.images.url }}" class="card-img-top" />
+{% endif %}
 <div>
     <a href="{% url 'blog_update' blog.slug %}">Update</a>
     <a href="{% url 'blog_delete' blog.slug %}">Delete</a>
